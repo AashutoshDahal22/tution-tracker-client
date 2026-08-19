@@ -1,0 +1,235 @@
+import { useState } from "react";
+
+const stats = [
+  { label: "Total sessions", value: "184", sub: "since you started" },
+  { label: "Total earned", value: "$9,240", sub: "all time" },
+  { label: "Sessions this month", value: "22", sub: "Aug 2026" },
+  { label: "Active students", value: "11", sub: "currently enrolled" },
+];
+
+const sessions = [
+  {
+    student: "Aarav Mehta",
+    subject: "Physics",
+    date: "Aug 19",
+    time: "4:00 PM",
+    duration: "1h",
+    status: "Upcoming",
+    price: "$45",
+  },
+  {
+    student: "Priya Shah",
+    subject: "Calculus",
+    date: "Aug 19",
+    time: "6:00 PM",
+    duration: "1.5h",
+    status: "Upcoming",
+    price: "$65",
+  },
+  {
+    student: "Liam Chen",
+    subject: "Chemistry",
+    date: "Aug 18",
+    time: "5:00 PM",
+    duration: "1h",
+    status: "Completed",
+    price: "$45",
+  },
+  {
+    student: "Sara Okafor",
+    subject: "Physics",
+    date: "Aug 17",
+    time: "3:30 PM",
+    duration: "1h",
+    status: "Completed",
+    price: "$45",
+  },
+  {
+    student: "Noah Kim",
+    subject: "Algebra",
+    date: "Aug 16",
+    time: "5:30 PM",
+    duration: "1h",
+    status: "Cancelled",
+    price: "$0",
+  },
+  {
+    student: "Emma Torres",
+    subject: "Calculus",
+    date: "Aug 15",
+    time: "4:30 PM",
+    duration: "1.5h",
+    status: "Completed",
+    price: "$65",
+  },
+];
+
+const statusStyles = {
+  Upcoming: "bg-emerald-50 text-emerald-800 border-emerald-200",
+  Completed: "bg-stone-100 text-stone-600 border-stone-200",
+  Cancelled: "bg-red-50 text-red-700 border-red-200",
+};
+
+const Dashboard = () => {
+  const [filter, setFilter] = useState("All");
+  const filters = ["All", "Upcoming", "Completed", "Cancelled"];
+  const filtered =
+    filter === "All" ? sessions : sessions.filter((s) => s.status === filter);
+
+  return (
+    <div className="min-h-screen bg-stone-50 text-stone-900 p-5 sm:p-8 lg:p-10">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+          <div>
+            <div className="text-xs tracking-widest uppercase text-emerald-800 mb-1">
+              Tuition tracker
+            </div>
+            <h1 className="font-serif text-3xl sm:text-4xl">Your sessions</h1>
+          </div>
+          <button
+            type="button"
+            className="text-sm font-semibold text-stone-50 bg-stone-900 border border-stone-900 px-5 py-3 hover:bg-emerald-800 hover:border-emerald-800 transition-colors whitespace-nowrap"
+          >
+            + Start new session
+          </button>
+        </div>
+
+        {/* Stat cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {stats.map((s) => (
+            <div key={s.label} className="border border-stone-200 bg-white p-5">
+              <div className="text-xs font-medium text-stone-500">
+                {s.label}
+              </div>
+              <div className="font-serif text-2xl sm:text-3xl mt-2">
+                {s.value}
+              </div>
+              <div className="text-xs text-stone-400 mt-1">{s.sub}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Two-column: monthly overview + top students */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+          <div className="lg:col-span-2 border border-stone-200 bg-white p-6">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="font-serif text-lg">This month</h2>
+              <span className="text-xs text-stone-400">Aug 1 – Aug 31</span>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <div className="text-xs text-stone-500">Sessions held</div>
+                <div className="font-serif text-2xl mt-1">18</div>
+              </div>
+              <div>
+                <div className="text-xs text-stone-500">Sessions upcoming</div>
+                <div className="font-serif text-2xl mt-1">4</div>
+              </div>
+              <div>
+                <div className="text-xs text-stone-500">Earned so far</div>
+                <div className="font-serif text-2xl mt-1">$1,120</div>
+              </div>
+            </div>
+            <div className="mt-6 h-2 bg-stone-100 overflow-hidden">
+              <div className="h-full bg-emerald-800" style={{ width: "72%" }} />
+            </div>
+            <div className="text-xs text-stone-400 mt-2">
+              22 of 30 planned sessions this month
+            </div>
+          </div>
+
+          <div className="border border-stone-200 bg-white p-6">
+            <h2 className="font-serif text-lg mb-5">Top students</h2>
+            <div className="flex flex-col gap-4">
+              {[
+                { name: "Priya Shah", sessions: 14 },
+                { name: "Aarav Mehta", sessions: 12 },
+                { name: "Emma Torres", sessions: 9 },
+              ].map((st) => (
+                <div
+                  key={st.name}
+                  className="flex items-center justify-between text-sm"
+                >
+                  <span className="text-stone-700">{st.name}</span>
+                  <span className="text-stone-400">{st.sessions} sessions</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Sessions table */}
+        <div className="border border-stone-200 bg-white">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-6 pb-4">
+            <h2 className="font-serif text-lg">Recent &amp; upcoming</h2>
+            <div className="flex gap-2 flex-wrap">
+              {filters.map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className={`text-xs font-medium px-3 py-1.5 border transition-colors ${
+                    filter === f
+                      ? "bg-stone-900 text-stone-50 border-stone-900"
+                      : "bg-white text-stone-500 border-stone-200 hover:border-stone-400"
+                  }`}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-t border-stone-200 text-left text-xs text-stone-400">
+                  <th className="font-medium px-6 py-3">Student</th>
+                  <th className="font-medium px-6 py-3">Subject</th>
+                  <th className="font-medium px-6 py-3">Date</th>
+                  <th className="font-medium px-6 py-3">Duration</th>
+                  <th className="font-medium px-6 py-3">Status</th>
+                  <th className="font-medium px-6 py-3 text-right">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((s, i) => (
+                  <tr key={i} className="border-t border-stone-100">
+                    <td className="px-6 py-3.5 text-stone-800">{s.student}</td>
+                    <td className="px-6 py-3.5 text-stone-500">{s.subject}</td>
+                    <td className="px-6 py-3.5 text-stone-500">
+                      {s.date} &middot; {s.time}
+                    </td>
+                    <td className="px-6 py-3.5 text-stone-500">{s.duration}</td>
+                    <td className="px-6 py-3.5">
+                      <span
+                        className={`text-xs font-medium px-2 py-1 border ${statusStyles[s.status]}`}
+                      >
+                        {s.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-3.5 text-right text-stone-800">
+                      {s.price}
+                    </td>
+                  </tr>
+                ))}
+                {filtered.length === 0 && (
+                  <tr>
+                    <td
+                      colSpan={6}
+                      className="px-6 py-8 text-center text-stone-400"
+                    >
+                      No sessions in this view.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
