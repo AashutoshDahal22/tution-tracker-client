@@ -1,19 +1,26 @@
 import DashboardLayout from "@/layouts/DashboardLayout";
 import AuthForm from "@/pages/AuthForm";
 import Dashboard from "@/pages/Dashboard";
+import Home from "@/pages/Home";
 import SessionTracker from "@/pages/SessionTracker";
 import StudentDashboard from "@/pages/StudentDashboard";
 import { Routes, Route } from "react-router-dom";
+import PublicRoute from "./PublicRoute";
+import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/auth" element={<AuthForm />} />
-
-      <Route element={<DashboardLayout />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/students" element={<StudentDashboard />} />
-        <Route path="/sessions" element={<SessionTracker />} />
+      <Route path="/" element={<Home />} />
+      <Route element={<PublicRoute />}>
+        <Route path="/auth" element={<AuthForm />} />
+      </Route>
+      <Route element={<ProtectedRoute />}>
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/students" element={<StudentDashboard />} />
+          <Route path="/sessions" element={<SessionTracker />} />
+        </Route>
       </Route>
     </Routes>
   );

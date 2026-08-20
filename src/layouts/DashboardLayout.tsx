@@ -1,6 +1,25 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+
+import { useAppDispatch, useAppSelector } from "@/store/hook";
+import { logoutUser } from "@/store/slices/authSlice";
 
 const DashboardLayout = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const user = useAppSelector((state) => state.auth.user);
+  const loading = useAppSelector((state) => state.auth.loading);
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUser()).unwrap();
+
+      navigate("/auth");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-stone-50 text-stone-900 flex">
       {/* Sidebar */}
@@ -9,7 +28,7 @@ const DashboardLayout = () => {
 
         <nav className="space-y-1">
           <NavLink
-            to="/"
+            to="/dashboard"
             className={({ isActive }) =>
               `block px-3 py-2 text-sm ${
                 isActive
@@ -34,45 +53,6 @@ const DashboardLayout = () => {
             Students
           </NavLink>
 
-          {/* <NavLink
-            to="/classes"
-            className={({ isActive }) =>
-              `block px-3 py-2 text-sm ${
-                isActive
-                  ? "bg-stone-900 text-white"
-                  : "text-stone-600 hover:bg-stone-100"
-              }`
-            }
-          >
-            Classes
-          </NavLink> */}
-
-          {/* <NavLink
-            to="/attendance"
-            className={({ isActive }) =>
-              `block px-3 py-2 text-sm ${
-                isActive
-                  ? "bg-stone-900 text-white"
-                  : "text-stone-600 hover:bg-stone-100"
-              }`
-            }
-          >
-            Attendance
-          </NavLink> */}
-
-          {/* <NavLink
-            to="/payments"
-            className={({ isActive }) =>
-              `block px-3 py-2 text-sm ${
-                isActive
-                  ? "bg-stone-900 text-white"
-                  : "text-stone-600 hover:bg-stone-100"
-              }`
-            }
-          >
-            Payments
-          </NavLink> */}
-
           <NavLink
             to="/sessions"
             className={({ isActive }) =>
@@ -96,7 +76,23 @@ const DashboardLayout = () => {
             <p className="text-sm text-stone-500">Tuition Tracker</p>
           </div>
 
-          <div className="text-sm">Admin</div>
+          {/* User section */}
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <p className="text-sm font-medium text-stone-900">{user?.name}</p>
+
+              <p className="text-xs text-stone-500">{user?.email}</p>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleLogout}
+              disabled={loading}
+              className="px-3 py-2 text-sm border border-stone-300 text-stone-700 hover:bg-stone-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? "Logging out..." : "Logout"}
+            </button>
+          </div>
         </header>
 
         {/* Current page */}
