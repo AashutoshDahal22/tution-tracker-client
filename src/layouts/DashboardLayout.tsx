@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "@/store/hook";
-import { logoutUser } from "@/store/slices/authSlice";
+import { logoutUser } from "@/features/auth/authSlice";
 
 const DashboardLayout = () => {
   const dispatch = useAppDispatch();

@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <AuthInitializer />
-      <AppRoutes />;
+      <AppRoutes />
     </>
   );
 }

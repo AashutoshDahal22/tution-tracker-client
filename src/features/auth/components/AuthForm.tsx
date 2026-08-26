@@ -5,7 +5,7 @@ import {
   loginUser,
   signupUser,
   clearAuthError,
-} from "@/store/slices/authSlice";
+} from "@/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 
 export default function AuthForm() {

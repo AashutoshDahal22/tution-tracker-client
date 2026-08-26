@@ -1,9 +1,9 @@
 import DashboardLayout from "@/layouts/DashboardLayout";
-import AuthForm from "@/pages/AuthForm";
+import AuthForm from "@/features/auth/components/AuthForm";
 import Dashboard from "@/pages/Dashboard";
 import Home from "@/pages/Home";
-import SessionTracker from "@/pages/SessionTracker";
-import StudentDashboard from "@/pages/StudentDashboard";
+import SessionTracker from "@/features/sessions/pages/SessionDashboard";
+import StudentDashboard from "@/features/students/pages/StudentDashboard";
 import { Routes, Route } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
