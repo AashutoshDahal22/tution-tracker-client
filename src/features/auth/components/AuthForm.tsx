@@ -8,9 +8,11 @@ import {
 } from "@/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
+
 export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "signup">("login");
-
   const [formError, setFormError] = useState("");
 
   const isSignup = mode === "signup";
@@ -51,13 +53,7 @@ export default function AuthForm() {
           return;
         }
 
-        await dispatch(
-          signupUser({
-            name,
-            email,
-            password,
-          }),
-        ).unwrap();
+        await dispatch(signupUser({ name, email, password })).unwrap();
 
         form.reset();
         navigate("/dashboard");
@@ -67,18 +63,13 @@ export default function AuthForm() {
           return;
         }
 
-        await dispatch(
-          loginUser({
-            email,
-            password,
-          }),
-        ).unwrap();
+        await dispatch(loginUser({ email, password })).unwrap();
 
         form.reset();
         navigate("/dashboard");
       }
-    } catch (error) {
-      console.error("Authentication failed:", error);
+    } catch (err) {
+      console.error("Authentication failed:", err);
     }
   };
 
@@ -113,7 +104,6 @@ export default function AuthForm() {
 
           <div className="flex items-center gap-2.5 text-[13px] text-stone-500">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-none" />
-
             <span>{isSignup ? "Create your account" : "Welcome back"}</span>
           </div>
         </aside>
@@ -159,88 +149,48 @@ export default function AuthForm() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="flex flex-col">
             <div className="flex flex-col gap-4">
-              {/* Name */}
               {isSignup && (
-                <div className="flex flex-col gap-1.5">
-                  <label
-                    htmlFor="name"
-                    className="text-xs font-medium text-stone-500"
-                  >
-                    Full name
-                  </label>
-
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    placeholder="Jordan Blake"
-                    autoComplete="name"
-                    disabled={loading}
-                    className="text-sm bg-transparent border border-stone-300 px-3.5 py-3 outline-none focus:border-emerald-800 transition-colors disabled:opacity-50"
-                  />
-                </div>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  label="Full name"
+                  placeholder="Jordan Blake"
+                  autoComplete="name"
+                  disabled={loading}
+                />
               )}
 
-              {/* Email */}
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="email"
-                  className="text-xs font-medium text-stone-500"
-                >
-                  Email
-                </label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                label="Email"
+                placeholder="you@example.com"
+                autoComplete="email"
+                disabled={loading}
+              />
 
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  autoComplete="email"
-                  disabled={loading}
-                  className="text-sm bg-transparent border border-stone-300 px-3.5 py-3 outline-none focus:border-emerald-800 transition-colors disabled:opacity-50"
-                />
-              </div>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                label="Password"
+                placeholder="••••••••"
+                autoComplete={isSignup ? "new-password" : "current-password"}
+                disabled={loading}
+              />
 
-              {/* Password */}
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="password"
-                  className="text-xs font-medium text-stone-500"
-                >
-                  Password
-                </label>
-
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="••••••••"
-                  autoComplete={isSignup ? "new-password" : "current-password"}
-                  disabled={loading}
-                  className="text-sm bg-transparent border border-stone-300 px-3.5 py-3 outline-none focus:border-emerald-800 transition-colors disabled:opacity-50"
-                />
-              </div>
-
-              {/* Confirm password */}
               {isSignup && (
-                <div className="flex flex-col gap-1.5">
-                  <label
-                    htmlFor="confirmPassword"
-                    className="text-xs font-medium text-stone-500"
-                  >
-                    Confirm password
-                  </label>
-
-                  <input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type="password"
-                    placeholder="••••••••"
-                    autoComplete="new-password"
-                    disabled={loading}
-                    className="text-sm bg-transparent border border-stone-300 px-3.5 py-3 outline-none focus:border-emerald-800 transition-colors disabled:opacity-50"
-                  />
-                </div>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  label="Confirm password"
+                  placeholder="••••••••"
+                  autoComplete="new-password"
+                  disabled={loading}
+                />
               )}
             </div>
 
@@ -257,35 +207,31 @@ export default function AuthForm() {
                   Remember me
                 </label>
 
-                <button
+                <Button
                   type="button"
-                  className="text-emerald-800 hover:underline"
+                  variant="ghost"
+                  size="sm"
+                  className="px-0"
                 >
                   Forgot password?
-                </button>
+                </Button>
               </div>
             )}
 
             {/* Submit */}
-            <button
+            <Button
               type="submit"
-              disabled={loading}
-              className="mt-6 text-sm font-semibold text-stone-50 bg-stone-900 border border-stone-900 px-4 py-3.5 hover:bg-emerald-800 hover:border-emerald-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              isLoading={loading}
+              fullWidth
+              className="mt-6"
             >
-              {loading
-                ? isSignup
-                  ? "Creating account..."
-                  : "Logging in..."
-                : isSignup
-                  ? "Create account"
-                  : "Login"}
-            </button>
+              {isSignup ? "Create account" : "Login"}
+            </Button>
           </form>
 
           {/* Bottom switch */}
           <p className="mt-auto pt-6 text-[13.5px] text-stone-500">
             {isSignup ? "Already have an account? " : "Don't have an account? "}
-
             <button
               type="button"
               disabled={loading}

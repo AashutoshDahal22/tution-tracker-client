@@ -8,7 +8,11 @@ import {
   deleteStudent,
 } from "@/features/students/api";
 
-import type { Student } from "@/features/students/api";
+import type {
+  CreateStudentInput,
+  Student,
+  UpdateStudentInput,
+} from "@/features/students/api";
 
 interface StudentState {
   students: Student[];
@@ -62,13 +66,7 @@ export const fetchStudent = createAsyncThunk(
 export const addStudent = createAsyncThunk(
   "students/addStudent",
 
-  async (
-    data: Omit<
-      Student,
-      "id" | "studentCode" | "userId" | "createdAt" | "updatedAt"
-    >,
-    { rejectWithValue },
-  ) => {
+  async (data: CreateStudentInput, { rejectWithValue }) => {
     try {
       const student = await createStudent(data);
 
@@ -86,7 +84,7 @@ export const editStudent = createAsyncThunk(
   "students/editStudent",
 
   async (
-    { id, data }: { id: string; data: Partial<Student> },
+    { id, data }: { id: string; data: UpdateStudentInput },
     { rejectWithValue },
   ) => {
     try {

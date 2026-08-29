@@ -1,89 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import {
+  addStudent,
+  editStudent,
+  fetchStudents,
+  removeStudent,
+} from "../studentSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hook";
+import StudentForm from "../components/StudentForm";
+import StudentTable from "../components/StudentTable";
+import type { Student, StudentFormValues } from "../types";
 
-type Student = {
-  id: string;
-  name: string;
-  email: string;
-  grade: string;
-  status: "active" | "inactive";
-};
-
-type FormState = {
-  name: string;
-  email: string;
-  grade: string;
-  status: "active" | "inactive";
-};
-
-const emptyForm: FormState = {
+const emptyForm: StudentFormValues = {
   name: "",
-  email: "",
-  grade: "",
-  status: "active",
+  parentName: "",
+  phone: "",
+  address: "",
+  subject: "",
+  billingType: "HOURLY",
+  rate: "",
+  status: "ACTIVE",
 };
-
-const seedStudents: Student[] = [
-  {
-    id: "1",
-    name: "Amara Osei",
-    email: "amara.osei@mail.edu",
-    grade: "10th",
-    status: "active",
-  },
-  {
-    id: "2",
-    name: "Liam Chen",
-    email: "liam.chen@mail.edu",
-    grade: "11th",
-    status: "active",
-  },
-  {
-    id: "3",
-    name: "Priya Nair",
-    email: "priya.nair@mail.edu",
-    grade: "9th",
-    status: "inactive",
-  },
-];
-
-const statusStyles: Record<Student["status"], string> = {
-  active: "bg-emerald-50 text-emerald-800 border-emerald-200",
-  inactive: "bg-stone-100 text-stone-500 border-stone-200",
-};
-
-const statusLabel: Record<Student["status"], string> = {
-  active: "Active",
-  inactive: "Inactive",
-};
-
-const makeId = (): string =>
-  typeof crypto !== "undefined" && "randomUUID" in crypto
-    ? crypto.randomUUID()
-    : Math.random().toString(36).slice(2);
-
-const initials = (name: string): string =>
-  name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? "")
-    .join("");
 
 const StudentDashboard = () => {
-  const [students, setStudents] = useState<Student[]>(seedStudents);
   const [query, setQuery] = useState<string>("");
-  const [form, setForm] = useState<FormState>(emptyForm);
+  const [form, setForm] = useState<StudentFormValues>(emptyForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [formOpen, setFormOpen] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const { students, loading, error } = useAppSelector(
+    (state) => state.students,
+  );
+
+  useEffect(() => {
+    void dispatch(fetchStudents());
+  }, [dispatch]);
 
   const filtered = students.filter((s) => {
     const q = query.trim().toLowerCase();
     if (!q) return true;
     return (
       s.name.toLowerCase().includes(q) ||
-      s.email.toLowerCase().includes(q) ||
-      s.grade.toLowerCase().includes(q)
+      s.subject.toLowerCase().includes(q) ||
+      (s.parentName?.toLowerCase().includes(q) ?? false) ||
+      (s.phone?.toLowerCase().includes(q) ?? false)
     );
   });
 
@@ -96,8 +58,12 @@ const StudentDashboard = () => {
   const openEditForm = (student: Student): void => {
     setForm({
       name: student.name,
-      email: student.email,
-      grade: student.grade,
+      parentName: student.parentName ?? "",
+      phone: student.phone ?? "",
+      address: student.address ?? "",
+      subject: student.subject,
+      billingType: student.billingType,
+      rate: student.rate?.toString() ?? "",
       status: student.status,
     });
     setEditingId(student.id);
@@ -110,37 +76,40 @@ const StudentDashboard = () => {
     setForm(emptyForm);
   };
 
-  const handleSubmit = (): void => {
+  const handleSubmit = async (): Promise<void> => {
     const name = form.name.trim();
-    const email = form.email.trim();
-    const grade = form.grade.trim();
+    const subject = form.subject.trim();
+    const rate = Number(form.rate);
 
-    if (!name || !email || !grade) return;
+    if (!name || !subject || !Number.isFinite(rate) || rate <= 0) return;
 
-    if (editingId) {
-      setStudents((prev) =>
-        prev.map((s) =>
-          s.id === editingId
-            ? { ...s, name, email, grade, status: form.status }
-            : s,
-        ),
-      );
+    const data = {
+      name,
+      parentName: form.parentName.trim() || undefined,
+      phone: form.phone.trim() || undefined,
+      address: form.address.trim() || undefined,
+      subject,
+      billingType: form.billingType,
+      rate,
+      status: form.status,
+    };
+
+    if (editingId !== null) {
+      await dispatch(editStudent({ id: editingId, data })).unwrap();
     } else {
-      setStudents((prev) => [
-        ...prev,
-        { id: makeId(), name, email, grade, status: form.status },
-      ]);
+      const { status: _status, ...createData } = data;
+      await dispatch(addStudent(createData)).unwrap();
     }
 
     closeForm();
   };
 
-  const handleDelete = (id: string): void => {
-    setStudents((prev) => prev.filter((s) => s.id !== id));
+  const handleDelete = async (id: string): Promise<void> => {
+    await dispatch(removeStudent(id)).unwrap();
     setConfirmDeleteId(null);
   };
 
-  const activeCount = students.filter((s) => s.status === "active").length;
+  const activeCount = students.filter((s) => s.status === "ACTIVE").length;
 
   return (
     <div className="min-h-screen bg-stone-50 text-stone-900 p-5 sm:p-8">
@@ -156,181 +125,41 @@ const StudentDashboard = () => {
             </div>
           </div>
 
-          <button
-            onClick={openCreateForm}
-            className="text-sm font-semibold text-stone-50 bg-stone-900 border border-stone-900 px-4 py-2.5 hover:bg-emerald-800 hover:border-emerald-800 transition-colors whitespace-nowrap"
-          >
+          <Button onClick={openCreateForm} disabled={loading}>
             Add student
-          </button>
+          </Button>
         </div>
 
         <div className="mb-6">
-          <input
+          <Input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by name, email, or grade"
-            className="w-full text-sm border border-stone-200 px-3.5 py-2.5 focus:outline-none focus:border-stone-500 placeholder:text-stone-400"
           />
         </div>
 
         {formOpen && (
-          <div className="border border-stone-200 p-6 mb-7">
-            <div className="font-serif text-lg mb-5">
-              {editingId ? "Edit student" : "Add a new student"}
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-4 mb-5">
-              <div>
-                <label className="block text-xs uppercase tracking-widest text-stone-400 mb-1.5">
-                  Full name
-                </label>
-                <input
-                  type="text"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder="Jordan Vega"
-                  className="w-full text-sm border border-stone-200 px-3.5 py-2.5 focus:outline-none focus:border-stone-500 placeholder:text-stone-400"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs uppercase tracking-widest text-stone-400 mb-1.5">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="jordan.vega@mail.edu"
-                  className="w-full text-sm border border-stone-200 px-3.5 py-2.5 focus:outline-none focus:border-stone-500 placeholder:text-stone-400"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs uppercase tracking-widest text-stone-400 mb-1.5">
-                  Grade
-                </label>
-                <input
-                  type="text"
-                  value={form.grade}
-                  onChange={(e) => setForm({ ...form, grade: e.target.value })}
-                  placeholder="10th"
-                  className="w-full text-sm border border-stone-200 px-3.5 py-2.5 focus:outline-none focus:border-stone-500 placeholder:text-stone-400"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs uppercase tracking-widest text-stone-400 mb-1.5">
-                  Status
-                </label>
-                <select
-                  value={form.status}
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      status: e.target.value as Student["status"],
-                    })
-                  }
-                  className="w-full text-sm border border-stone-200 px-3.5 py-2.5 focus:outline-none focus:border-stone-500 bg-white"
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={handleSubmit}
-                className="flex-1 sm:flex-none text-sm font-semibold text-stone-50 bg-stone-900 border border-stone-900 px-5 py-2.5 hover:bg-emerald-800 hover:border-emerald-800 transition-colors"
-              >
-                {editingId ? "Save changes" : "Add student"}
-              </button>
-              <button
-                onClick={closeForm}
-                className="flex-1 sm:flex-none text-sm font-semibold text-stone-800 bg-white border border-stone-300 px-5 py-2.5 hover:border-stone-500 transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+          <StudentForm
+            values={form}
+            isEditing={editingId !== null}
+            onChange={setForm}
+            onSubmit={handleSubmit}
+            onCancel={closeForm}
+          />
         )}
 
-        <div className="border border-stone-200 divide-y divide-stone-200">
-          {filtered.length === 0 && (
-            <div className="py-14 text-center text-sm text-stone-400">
-              {students.length === 0
-                ? "No students yet. Add one to get started."
-                : "No students match your search."}
-            </div>
-          )}
+        {error && <div className="mb-5 text-sm text-red-700">{error}</div>}
 
-          {filtered.map((student) => (
-            <div
-              key={student.id}
-              className="flex items-center justify-between gap-4 px-5 py-4"
-            >
-              <div className="flex items-center gap-4 min-w-0">
-                <div className="shrink-0 w-9 h-9 border border-stone-200 flex items-center justify-center text-xs font-semibold text-stone-500">
-                  {initials(student.name)}
-                </div>
-
-                <div className="min-w-0">
-                  <div className="font-serif text-base truncate">
-                    {student.name}
-                  </div>
-                  <div className="text-xs text-stone-400 truncate">
-                    {student.email} · {student.grade}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 shrink-0">
-                <span
-                  className={`text-xs font-medium px-2.5 py-1 border whitespace-nowrap ${statusStyles[student.status]}`}
-                >
-                  {statusLabel[student.status]}
-                </span>
-
-                {confirmDeleteId === student.id ? (
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-stone-400 hidden sm:inline">
-                      Remove?
-                    </span>
-                    <button
-                      onClick={() => handleDelete(student.id)}
-                      className="text-xs font-semibold text-stone-50 bg-stone-900 border border-stone-900 px-3 py-1.5 hover:bg-emerald-800 hover:border-emerald-800 transition-colors"
-                    >
-                      Confirm
-                    </button>
-                    <button
-                      onClick={() => setConfirmDeleteId(null)}
-                      className="text-xs font-semibold text-stone-800 bg-white border border-stone-300 px-3 py-1.5 hover:border-stone-500 transition-colors"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => openEditForm(student)}
-                      className="text-xs font-semibold text-stone-800 bg-white border border-stone-300 px-3 py-1.5 hover:border-stone-500 transition-colors"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => setConfirmDeleteId(student.id)}
-                      className="text-xs font-semibold text-stone-800 bg-white border border-stone-300 px-3 py-1.5 hover:border-stone-500 transition-colors"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+        <StudentTable
+          students={filtered}
+          hasStudents={students.length > 0}
+          onEdit={openEditForm}
+          onRequestDelete={setConfirmDeleteId}
+          confirmDeleteId={confirmDeleteId}
+          onDelete={handleDelete}
+          onCancelDelete={() => setConfirmDeleteId(null)}
+        />
       </div>
     </div>
   );

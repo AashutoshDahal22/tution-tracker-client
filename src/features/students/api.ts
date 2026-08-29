@@ -1,15 +1,15 @@
-import { api } from "../../api/client";
+import { api } from "@/api";
 
 export interface Student {
   id: string;
   studentCode: string;
   name: string;
-  parentName: string;
-  phone: string;
-  address: string;
+  parentName: string | null;
+  phone: string | null;
+  address: string | null;
   subject: string;
   billingType: "HOURLY" | "MONTHLY";
-  rate: number;
+  rate: number | null;
   status: "ACTIVE" | "INACTIVE";
   userId: string;
   createdAt: string;
@@ -21,6 +21,20 @@ export interface StudentsResponse {
   data: Student[];
 }
 
+export interface CreateStudentInput {
+  name: string;
+  parentName?: string;
+  phone?: string;
+  address?: string;
+  subject: string;
+  billingType: "HOURLY" | "MONTHLY";
+  rate: number;
+}
+
+export type UpdateStudentInput = Partial<CreateStudentInput> & {
+  status?: "ACTIVE" | "INACTIVE";
+};
+
 interface StudentResponse {
   success: boolean;
   data: Student;
@@ -28,7 +42,7 @@ interface StudentResponse {
 
 export async function getStudents(): Promise<Student[]> {
   const response = await api.get<StudentsResponse>("/students");
-
+  console.log(response.data.data);
   return response.data.data;
 }
 
@@ -39,10 +53,7 @@ export async function getStudent(id: string): Promise<Student> {
 }
 
 export async function createStudent(
-  data: Omit<
-    Student,
-    "id" | "studentCode" | "userId" | "createdAt" | "updatedAt"
-  >,
+  data: CreateStudentInput,
 ): Promise<Student> {
   const response = await api.post<StudentResponse>("/students", data);
 
@@ -51,7 +62,7 @@ export async function createStudent(
 
 export async function updateStudent(
   id: string,
-  data: Partial<Student>,
+  data: UpdateStudentInput,
 ): Promise<Student> {
   const response = await api.patch<StudentResponse>(`/students/${id}`, data);
 
