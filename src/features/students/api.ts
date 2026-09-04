@@ -42,7 +42,6 @@ interface StudentResponse {
 
 export async function getStudents(): Promise<Student[]> {
   const response = await api.get<StudentsResponse>("/students");
-  console.log(response.data.data);
   return response.data.data;
 }
 

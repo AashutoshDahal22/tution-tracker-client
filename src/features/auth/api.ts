@@ -54,5 +54,8 @@ export async function getCurrentUser(): Promise<User> {
 }
 
 export async function logout(): Promise<void> {
-  await api.post("/auth/logout");
+  // No server-side session to destroy (stateless JWT) — the backend
+  // exposes no /auth/logout endpoint. Clearing the token happens in
+  // the auth slice; this exists so callers keep a uniform async API.
+  return Promise.resolve();
 }

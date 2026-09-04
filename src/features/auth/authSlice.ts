@@ -12,14 +12,6 @@ interface AuthState {
   error: string | null;
 }
 
-interface AuthState {
-  user: AuthResponse["data"]["user"] | null;
-  token: string | null;
-  isAuthenticated: boolean;
-  loading: boolean;
-  error: string | null;
-}
-
 const token = localStorage.getItem("token");
 
 const initialState: AuthState = {
@@ -121,7 +113,6 @@ const authSlice = createSlice({
 
         state.isAuthenticated = true;
 
-        console.log("This is the payload", action.payload.data.token);
         localStorage.setItem("token", action.payload.data.token);
       })
 

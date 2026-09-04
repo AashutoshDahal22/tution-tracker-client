@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import {
@@ -81,7 +82,10 @@ const StudentDashboard = () => {
     const subject = form.subject.trim();
     const rate = Number(form.rate);
 
-    if (!name || !subject || !Number.isFinite(rate) || rate <= 0) return;
+    if (!name || !subject || !Number.isFinite(rate) || rate <= 0) {
+      toast.error("Name, subject, and a positive rate are required.");
+      return;
+    }
 
     const data = {
       name,
@@ -95,18 +99,35 @@ const StudentDashboard = () => {
     };
 
     if (editingId !== null) {
-      await dispatch(editStudent({ id: editingId, data })).unwrap();
+      try {
+        await dispatch(editStudent({ id: editingId, data })).unwrap();
+        toast.success("Student updated.");
+      } catch {
+        toast.error("Could not update student.");
+        return;
+      }
     } else {
       const { status: _status, ...createData } = data;
-      await dispatch(addStudent(createData)).unwrap();
+      try {
+        await dispatch(addStudent(createData)).unwrap();
+        toast.success("Student added.");
+      } catch {
+        toast.error("Could not add student.");
+        return;
+      }
     }
 
     closeForm();
   };
 
   const handleDelete = async (id: string): Promise<void> => {
-    await dispatch(removeStudent(id)).unwrap();
-    setConfirmDeleteId(null);
+    try {
+      await dispatch(removeStudent(id)).unwrap();
+      setConfirmDeleteId(null);
+      toast.success("Student removed.");
+    } catch {
+      toast.error("Could not remove student.");
+    }
   };
 
   const activeCount = students.filter((s) => s.status === "ACTIVE").length;
