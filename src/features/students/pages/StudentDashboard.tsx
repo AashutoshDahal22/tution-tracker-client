@@ -160,7 +160,7 @@ const StudentDashboard = () => {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by name, email, or grade"
+            placeholder="Search by name"
           />
         </div>
 

@@ -22,9 +22,12 @@ const SessionForm = ({
   onSubmit,
   onCancel,
 }: SessionFormProps) => {
+  const startsInFuture =
+    values.startTime !== "" && new Date(values.startTime).getTime() > Date.now();
+
   return (
     <Form
-      title={isEditing ? "Edit session" : "Log a session"}
+      title={isEditing ? "Edit session" : "Schedule or log a session"}
       onSubmit={(event) => {
         event.preventDefault();
         onSubmit();
@@ -53,6 +56,11 @@ const SessionForm = ({
         }
         required
       />
+      {startsInFuture && (
+        <p className="text-sm text-emerald-800">
+          Starts in the future — it will show as Upcoming on the dashboard.
+        </p>
+      )}
       <Input
         name="notes"
         type="text"
@@ -62,7 +70,7 @@ const SessionForm = ({
         placeholder="Covered quadratic equations"
       />
       <FormActions
-        submitLabel={isEditing ? "Save changes" : "Log session"}
+        submitLabel={isEditing ? "Save changes" : "Save session"}
         onCancel={onCancel}
       />
     </Form>

@@ -183,14 +183,19 @@ const SessionTracker = () => {
         ).unwrap();
         toast.success("Session updated.");
       } else {
+        const start = new Date(parsed.data.startTime);
         await dispatch(
           addSession({
             studentId: parsed.data.studentId,
-            startTime: new Date(parsed.data.startTime).toISOString(),
+            startTime: start.toISOString(),
             notes: parsed.data.notes || undefined,
           }),
         ).unwrap();
-        toast.success("Session logged.");
+        toast.success(
+          start.getTime() > Date.now()
+            ? "Upcoming session scheduled."
+            : "Session logged.",
+        );
       }
       setFormOpen(false);
       setEditingId(null);
@@ -347,7 +352,7 @@ const SessionTracker = () => {
             variant="secondary"
             onClick={openCreateForm}
           >
-            Log session
+            Schedule session
           </Button>
         </div>
 
