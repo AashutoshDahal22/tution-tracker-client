@@ -64,7 +64,7 @@ const sessions = [
   },
 ];
 
-const statusStyles = {
+const statusStyles: Record<string, string> = {
   Upcoming: "bg-emerald-50 text-emerald-800 border-emerald-200",
   Completed: "bg-stone-100 text-stone-600 border-stone-200",
   Cancelled: "bg-red-50 text-red-700 border-red-200",
@@ -77,28 +77,33 @@ const Dashboard = () => {
     filter === "All" ? sessions : sessions.filter((s) => s.status === filter);
 
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-900 p-5 sm:p-8 lg:p-10">
-      <div className="max-w-6xl mx-auto">
+    <div className="w-full text-stone-900">
+      <div className="w-full max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
-          <div>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6 sm:mb-8">
+          <div className="min-w-0">
             <div className="text-xs tracking-widest uppercase text-emerald-800 mb-1">
               Tuition tracker
             </div>
-            <h1 className="font-serif text-3xl sm:text-4xl">Your sessions</h1>
+            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl">
+              Your sessions
+            </h1>
           </div>
           <button
             type="button"
-            className="text-sm font-semibold text-stone-50 bg-stone-900 border border-stone-900 px-5 py-3 hover:bg-emerald-800 hover:border-emerald-800 transition-colors whitespace-nowrap"
+            className="w-full sm:w-auto text-sm font-semibold text-stone-50 bg-stone-900 border border-stone-900 px-5 py-3 hover:bg-emerald-800 hover:border-emerald-800 transition-colors whitespace-nowrap"
           >
             + Start new session
           </button>
         </div>
 
         {/* Stat cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
           {stats.map((s) => (
-            <div key={s.label} className="border border-stone-200 bg-white p-5">
+            <div
+              key={s.label}
+              className="border border-stone-200 bg-white p-4 sm:p-5"
+            >
               <div className="text-xs font-medium text-stone-500">
                 {s.label}
               </div>
@@ -111,13 +116,15 @@ const Dashboard = () => {
         </div>
 
         {/* Two-column: monthly overview + top students */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
-          <div className="lg:col-span-2 border border-stone-200 bg-white p-6">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="font-serif text-lg">This month</h2>
-              <span className="text-xs text-stone-400">Aug 1 – Aug 31</span>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <div className="lg:col-span-2 border border-stone-200 bg-white p-5 sm:p-6">
+            <div className="flex items-center justify-between gap-3 mb-5">
+              <h2 className="font-serif text-base sm:text-lg">This month</h2>
+              <span className="text-xs text-stone-400 whitespace-nowrap">
+                Aug 1 – Aug 31
+              </span>
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <div className="text-xs text-stone-500">Sessions held</div>
                 <div className="font-serif text-2xl mt-1">18</div>
@@ -139,8 +146,10 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="border border-stone-200 bg-white p-6">
-            <h2 className="font-serif text-lg mb-5">Top students</h2>
+          <div className="border border-stone-200 bg-white p-5 sm:p-6">
+            <h2 className="font-serif text-base sm:text-lg mb-4 sm:mb-5">
+              Top students
+            </h2>
             <div className="flex flex-col gap-4">
               {[
                 { name: "Priya Shah", sessions: 14 },
@@ -161,8 +170,10 @@ const Dashboard = () => {
 
         {/* Sessions table */}
         <div className="border border-stone-200 bg-white">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-6 pb-4">
-            <h2 className="font-serif text-lg">Recent &amp; upcoming</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 sm:p-6 pb-4">
+            <h2 className="font-serif text-base sm:text-lg">
+              Recent &amp; upcoming
+            </h2>
             <div className="flex gap-2 flex-wrap">
               {filters.map((f) => (
                 <button
@@ -181,7 +192,7 @@ const Dashboard = () => {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full min-w-[640px] text-sm">
               <thead>
                 <tr className="border-t border-stone-200 text-left text-xs text-stone-400">
                   <th className="font-medium px-6 py-3">Student</th>

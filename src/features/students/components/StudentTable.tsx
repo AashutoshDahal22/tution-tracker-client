@@ -71,8 +71,8 @@ const StudentTable = ({
           header: "Actions",
           render: (student) =>
             confirmDeleteId === student.id ? (
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-stone-400">Remove?</span>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs text-stone-400 whitespace-nowrap">Remove?</span>
                 <Button size="sm" onClick={() => onDelete(student.id)}>
                   Confirm
                 </Button>
@@ -81,7 +81,7 @@ const StudentTable = ({
                 </Button>
               </div>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <Button
                   size="sm"
                   variant="secondary"

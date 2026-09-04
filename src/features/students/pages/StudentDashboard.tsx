@@ -112,20 +112,24 @@ const StudentDashboard = () => {
   const activeCount = students.filter((s) => s.status === "ACTIVE").length;
 
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-900 p-5 sm:p-8">
-      <div className="w-full max-w-3xl mx-auto border border-stone-200 bg-white p-7 sm:p-9">
-        <div className="flex items-start justify-between mb-8 gap-4">
-          <div>
+    <div className="w-full text-stone-900">
+      <div className="w-full max-w-3xl mx-auto border border-stone-200 bg-white p-4 sm:p-7 lg:p-9">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6 sm:mb-8">
+          <div className="min-w-0">
             <div className="text-xs tracking-widest uppercase text-emerald-800 mb-1">
               Student roster
             </div>
-            <div className="font-serif text-xl">Manage students</div>
+            <div className="font-serif text-lg sm:text-xl">Manage students</div>
             <div className="text-sm text-stone-400 mt-0.5">
               {students.length} total · {activeCount} active
             </div>
           </div>
 
-          <Button onClick={openCreateForm} disabled={loading}>
+          <Button
+            onClick={openCreateForm}
+            disabled={loading}
+            className="w-full sm:w-auto shrink-0"
+          >
             Add student
           </Button>
         </div>

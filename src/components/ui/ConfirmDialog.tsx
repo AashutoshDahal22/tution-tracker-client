@@ -26,17 +26,22 @@ const ConfirmDialog = ({
 }: ConfirmDialogProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onCancel} title={title} size="sm">
-      <p className="text-sm text-stone-600">{message}</p>
+      <p className="text-sm text-stone-600 leading-relaxed">{message}</p>
 
-      <div className="mt-7 flex gap-3">
+      <div className="mt-6 sm:mt-7 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
         <Button
           variant={danger ? "danger" : "primary"}
           onClick={onConfirm}
           isLoading={isLoading}
+          className="w-full sm:w-auto"
         >
           {confirmLabel}
         </Button>
-        <Button variant="secondary" onClick={onCancel}>
+        <Button
+          variant="secondary"
+          onClick={onCancel}
+          className="w-full sm:w-auto"
+        >
           {cancelLabel}
         </Button>
       </div>

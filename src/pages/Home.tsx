@@ -41,32 +41,32 @@ const Home = () => {
   };
 
   return (
-    <main className="min-h-screen bg-stone-50 text-stone-900 flex items-center justify-center p-5 sm:p-8">
-      <div className="w-full max-w-3xl border border-stone-200 bg-white p-8 sm:p-12">
+    <main className="min-h-screen bg-stone-50 text-stone-900 flex items-center justify-center p-4 sm:p-8">
+      <div className="w-full max-w-3xl border border-stone-200 bg-white p-6 sm:p-12">
         {/* Eyebrow */}
         <div className="text-xs tracking-widest uppercase text-emerald-800 mb-4">
           Tuition management
         </div>
 
         {/* Hero */}
-        <h1 className="font-serif text-4xl sm:text-5xl leading-tight max-w-xl">
+        <h1 className="font-serif text-3xl min-[420px]:text-4xl sm:text-5xl leading-tight max-w-xl break-words">
           Every student, session, and record in one ledger.
         </h1>
 
-        <p className="mt-4 text-stone-500 max-w-md">
+        <p className="mt-4 text-sm sm:text-base text-stone-500 max-w-md leading-relaxed">
           Tuition Tracker keeps your roster, session timers, and attendance
           organized, so you can spend less time on admin and more time teaching.
         </p>
 
         <button
           onClick={handleButtonClick}
-          className="mt-8 text-sm font-semibold text-stone-50 bg-stone-900 border border-stone-900 px-6 py-3.5 hover:bg-emerald-800 hover:border-emerald-800 transition-colors"
+          className="mt-8 w-full sm:w-auto text-sm font-semibold text-stone-50 bg-stone-900 border border-stone-900 px-6 py-3.5 hover:bg-emerald-800 hover:border-emerald-800 transition-colors"
         >
           {isAuthenticated ? "Go to dashboard" : "Get started"}
         </button>
 
         {/* Feature strip */}
-        <div className="mt-12 border-t border-stone-200 pt-8 grid sm:grid-cols-3 gap-6">
+        <div className="mt-10 sm:mt-12 border-t border-stone-200 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
           {features.map((feature) => (
             <div key={feature.title}>
               <div className="w-9 h-9 border border-stone-200 flex items-center justify-center text-xs font-semibold text-stone-500 mb-3">

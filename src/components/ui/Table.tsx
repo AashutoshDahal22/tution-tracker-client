@@ -28,14 +28,14 @@ function Table<T>({
   }
 
   return (
-    <div className="border border-stone-200 overflow-x-auto">
-      <table className="w-full text-sm">
+    <div className="border border-stone-200 overflow-x-auto -mx-0">
+      <table className="w-full min-w-[640px] text-sm border-collapse">
         <thead>
           <tr className="border-b border-stone-200">
             {columns.map((col, i) => (
               <th
                 key={i}
-                className="text-left text-xs uppercase tracking-widest text-stone-400 font-medium px-5 py-3 whitespace-nowrap"
+                className="text-left text-xs uppercase tracking-widest text-stone-400 font-medium px-4 sm:px-5 py-3 whitespace-nowrap"
               >
                 {col.header}
               </th>
@@ -44,11 +44,11 @@ function Table<T>({
         </thead>
         <tbody className="divide-y divide-stone-200">
           {data.map((row) => (
-            <tr key={keyExtractor(row)}>
+            <tr key={keyExtractor(row)} className="hover:bg-stone-50/60">
               {columns.map((col, i) => (
                 <td
                   key={i}
-                  className={`px-5 py-4 align-middle ${col.className ?? ""}`}
+                  className={`px-4 sm:px-5 py-4 align-middle ${col.className ?? ""}`}
                 >
                   {col.render(row)}
                 </td>
