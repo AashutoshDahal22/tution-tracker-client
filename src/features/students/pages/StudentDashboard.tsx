@@ -113,14 +113,14 @@ const StudentDashboard = () => {
 
   return (
     <div className="w-full text-stone-900">
-      <div className="w-full max-w-3xl mx-auto border border-stone-200 bg-white p-4 sm:p-7 lg:p-9">
+      <div className="w-full max-w-3xl mx-auto border border-stone-200 rounded-2xl bg-white shadow-sm p-5 sm:p-7 lg:p-9">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6 sm:mb-8">
           <div className="min-w-0">
-            <div className="text-xs tracking-widest uppercase text-emerald-800 mb-1">
+            <div className="text-sm font-semibold text-emerald-800 mb-1">
               Student roster
             </div>
-            <div className="font-serif text-lg sm:text-xl">Manage students</div>
-            <div className="text-sm text-stone-400 mt-0.5">
+            <div className="font-serif text-xl sm:text-2xl">Manage students</div>
+            <div className="text-base text-stone-500 mt-0.5">
               {students.length} total · {activeCount} active
             </div>
           </div>
@@ -153,7 +153,7 @@ const StudentDashboard = () => {
           />
         )}
 
-        {error && <div className="mb-5 text-sm text-red-700">{error}</div>}
+        {error && <div className="mb-5 text-base text-red-700">{error}</div>}
 
         <StudentTable
           students={filtered}

@@ -8,7 +8,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 const Form = ({ title, children, className = "", ...rest }: FormProps) => {
   return (
     <form
-      className={`border border-stone-200 p-4 sm:p-6 mb-6 sm:mb-7 ${className}`}
+      className={`border border-stone-200 rounded-xl bg-cream-50 p-4 sm:p-6 mb-6 sm:mb-7 ${className}`}
       {...rest}
     >
       {title && (

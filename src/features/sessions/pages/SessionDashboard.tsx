@@ -102,25 +102,25 @@ const SessionTracker = () => {
 
   return (
     <div className="w-full text-stone-900 flex justify-center">
-      <div className="w-full max-w-md border border-stone-200 bg-white p-5 sm:p-7 lg:p-9">
+      <div className="w-full max-w-md border border-stone-200 rounded-2xl bg-white shadow-sm p-5 sm:p-7 lg:p-9">
         {/* Date / Status */}
         <div className="flex items-start justify-between gap-3 mb-6 sm:mb-8">
           <div className="min-w-0">
-            <div className="text-xs tracking-widest uppercase text-emerald-800 mb-1">
+            <div className="text-sm font-semibold text-emerald-800 mb-1">
               Live session
             </div>
 
-            <div className="font-serif text-lg sm:text-xl break-words">
+            <div className="font-serif text-xl sm:text-2xl break-words">
               {dateLabel}
             </div>
 
-            <div className="text-sm text-stone-400 mt-0.5 tabular-nums">
+            <div className="text-base text-stone-500 mt-0.5 tabular-nums">
               {timeLabel}
             </div>
           </div>
 
           <span
-            className={`text-xs font-medium px-2.5 py-1 border whitespace-nowrap shrink-0 ${
+            className={`text-sm font-medium px-3 py-1 rounded-full border whitespace-nowrap shrink-0 ${
               statusStyles[status]
             }`}
           >
@@ -129,12 +129,12 @@ const SessionTracker = () => {
         </div>
 
         {/* Timer */}
-        <div className="border border-stone-200 py-8 sm:py-10 px-4 flex flex-col items-center justify-center mb-6 sm:mb-7">
+        <div className="border border-stone-200 rounded-2xl bg-cream-50 py-8 sm:py-10 px-4 flex flex-col items-center justify-center mb-6 sm:mb-7">
           <div className="font-serif text-4xl min-[400px]:text-5xl sm:text-6xl tabular-nums tracking-tight text-center break-all">
             {formatElapsed(elapsed)}
           </div>
 
-          <div className="text-xs text-stone-400 mt-3">
+          <div className="text-sm text-stone-500 mt-3">
             {startedAt
               ? `Started at ${startedAt.toLocaleTimeString(undefined, {
                   hour: "2-digit",
@@ -149,7 +149,7 @@ const SessionTracker = () => {
           {status === "idle" && (
             <button
               onClick={handleStart}
-              className="flex-1 text-sm font-semibold text-stone-50 bg-stone-900 border border-stone-900 px-4 py-3.5 hover:bg-emerald-800 hover:border-emerald-800 transition-colors min-h-[48px]"
+              className="flex-1 text-base font-semibold text-stone-50 bg-emerald-800 border border-emerald-800 rounded-xl px-4 py-3.5 hover:bg-emerald-900 hover:border-emerald-900 transition-colors min-h-[52px]"
             >
               Start session
             </button>
@@ -159,14 +159,14 @@ const SessionTracker = () => {
             <>
               <button
                 onClick={handlePauseResume}
-                className="flex-1 text-sm font-semibold text-stone-800 bg-white border border-stone-300 px-4 py-3.5 hover:border-stone-500 transition-colors min-h-[48px]"
+                className="flex-1 text-base font-semibold text-stone-800 bg-white border border-stone-300 rounded-xl px-4 py-3.5 hover:border-emerald-700 transition-colors min-h-[52px]"
               >
                 {status === "running" ? "Pause" : "Resume"}
               </button>
 
               <button
                 onClick={handleEnd}
-                className="flex-1 text-sm font-semibold text-stone-50 bg-stone-900 border border-stone-900 px-4 py-3.5 hover:bg-emerald-800 hover:border-emerald-800 transition-colors min-h-[48px]"
+                className="flex-1 text-base font-semibold text-stone-50 bg-emerald-800 border border-emerald-800 rounded-xl px-4 py-3.5 hover:bg-emerald-900 hover:border-emerald-900 transition-colors min-h-[52px]"
               >
                 End session
               </button>
@@ -176,7 +176,7 @@ const SessionTracker = () => {
           {status === "ended" && (
             <button
               onClick={handleReset}
-              className="flex-1 text-sm font-semibold text-stone-800 bg-white border border-stone-300 px-4 py-3.5 hover:border-stone-500 transition-colors min-h-[48px]"
+              className="flex-1 text-base font-semibold text-stone-800 bg-white border border-stone-300 rounded-xl px-4 py-3.5 hover:border-emerald-700 transition-colors min-h-[52px]"
             >
               Start a new session
             </button>
@@ -185,7 +185,7 @@ const SessionTracker = () => {
 
         {/* Ended session information */}
         {status === "ended" && (
-          <div className="mt-5 text-xs text-stone-400 text-center">
+          <div className="mt-5 text-sm text-stone-500 text-center">
             Total duration logged: {formatElapsed(elapsed)}
           </div>
         )}

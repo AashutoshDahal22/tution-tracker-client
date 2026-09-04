@@ -41,10 +41,10 @@ const Home = () => {
   };
 
   return (
-    <main className="min-h-screen bg-stone-50 text-stone-900 flex items-center justify-center p-4 sm:p-8">
-      <div className="w-full max-w-3xl border border-stone-200 bg-white p-6 sm:p-12">
+    <main className="min-h-screen bg-cream-100 text-stone-900 flex items-center justify-center p-4 sm:p-8">
+      <div className="w-full max-w-3xl border border-stone-200 rounded-2xl bg-white shadow-sm p-6 sm:p-12">
         {/* Eyebrow */}
-        <div className="text-xs tracking-widest uppercase text-emerald-800 mb-4">
+        <div className="text-sm font-semibold text-emerald-800 mb-4">
           Tuition management
         </div>
 
@@ -60,7 +60,7 @@ const Home = () => {
 
         <button
           onClick={handleButtonClick}
-          className="mt-8 w-full sm:w-auto text-sm font-semibold text-stone-50 bg-stone-900 border border-stone-900 px-6 py-3.5 hover:bg-emerald-800 hover:border-emerald-800 transition-colors"
+          className="mt-8 w-full sm:w-auto text-base font-semibold text-stone-50 bg-emerald-800 border border-emerald-800 rounded-xl px-6 py-3.5 min-h-[52px] hover:bg-emerald-900 hover:border-emerald-900 transition-colors"
         >
           {isAuthenticated ? "Go to dashboard" : "Get started"}
         </button>
@@ -68,14 +68,14 @@ const Home = () => {
         {/* Feature strip */}
         <div className="mt-10 sm:mt-12 border-t border-stone-200 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
           {features.map((feature) => (
-            <div key={feature.title}>
-              <div className="w-9 h-9 border border-stone-200 flex items-center justify-center text-xs font-semibold text-stone-500 mb-3">
+            <div key={feature.title} className="rounded-xl bg-cream-50 border border-stone-200 p-4">
+              <div className="w-10 h-10 rounded-full bg-emerald-800 flex items-center justify-center text-sm font-semibold text-stone-50 mb-3">
                 {feature.label.slice(0, 2).toUpperCase()}
               </div>
 
-              <div className="font-serif text-lg mb-1">{feature.title}</div>
+              <div className="font-serif text-xl mb-1">{feature.title}</div>
 
-              <div className="text-sm text-stone-500 leading-relaxed">
+              <div className="text-base text-stone-600 leading-relaxed">
                 {feature.description}
               </div>
             </div>

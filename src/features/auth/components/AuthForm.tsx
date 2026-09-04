@@ -80,8 +80,8 @@ export default function AuthForm() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50 flex items-center justify-center p-4 sm:p-6">
-      <div className="w-full max-w-[920px] min-h-[560px] grid grid-cols-1 md:grid-cols-2 border border-stone-200 bg-white">
+    <div className="min-h-screen bg-cream-100 flex items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-[920px] min-h-[560px] grid grid-cols-1 md:grid-cols-2 border border-stone-200 rounded-2xl bg-white shadow-sm overflow-hidden">
         {/* Left panel */}
         <aside className="hidden md:flex flex-col justify-between bg-stone-900 text-stone-50 p-8 lg:p-11">
           <div className="text-sm tracking-widest uppercase text-emerald-200/80">
@@ -95,7 +95,7 @@ export default function AuthForm() {
                 : "Login and Happy Tracking"}
             </h1>
 
-            <p className="mt-4 text-sm leading-relaxed text-stone-400 max-w-[280px]">
+            <p className="mt-4 text-sm leading-relaxed text-stone-300 max-w-[280px]">
               {isSignup
                 ? "Just a few details and you're on the ledger."
                 : "Sign in to pick up where you left off, or join us today."}
@@ -116,10 +116,10 @@ export default function AuthForm() {
               type="button"
               disabled={loading}
               onClick={() => switchMode("login")}
-              className={`pb-3.5 text-sm font-medium transition-colors ${
+              className={`pb-3.5 text-base font-medium min-h-[48px] transition-colors ${
                 !isSignup
                   ? "text-stone-900 border-b-2 border-emerald-800"
-                  : "text-stone-400"
+                  : "text-stone-500"
               } disabled:opacity-50`}
             >
               Login
@@ -129,10 +129,10 @@ export default function AuthForm() {
               type="button"
               disabled={loading}
               onClick={() => switchMode("signup")}
-              className={`pb-3.5 text-sm font-medium transition-colors ${
+              className={`pb-3.5 text-base font-medium min-h-[48px] transition-colors ${
                 isSignup
                   ? "text-stone-900 border-b-2 border-emerald-800"
-                  : "text-stone-400"
+                  : "text-stone-500"
               } disabled:opacity-50`}
             >
               Create account
@@ -141,7 +141,7 @@ export default function AuthForm() {
 
           {/* Error */}
           {error && (
-            <div className="mb-5 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <div className="mb-5 border border-red-200 rounded-xl bg-red-50 px-4 py-3 text-base text-red-700">
               {error}
             </div>
           )}

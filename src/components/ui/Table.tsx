@@ -21,21 +21,21 @@ function Table<T>({
 }: TableProps<T>) {
   if (data.length === 0) {
     return (
-      <div className="border border-stone-200 py-14 text-center text-sm text-stone-400">
+      <div className="border border-stone-200 rounded-xl bg-white py-14 px-4 text-center text-base text-stone-500">
         {emptyMessage}
       </div>
     );
   }
 
   return (
-    <div className="border border-stone-200 overflow-x-auto -mx-0">
-      <table className="w-full min-w-[640px] text-sm border-collapse">
+    <div className="border border-stone-200 rounded-xl bg-white overflow-x-auto -mx-0">
+      <table className="w-full min-w-[640px] text-base border-collapse">
         <thead>
           <tr className="border-b border-stone-200">
             {columns.map((col, i) => (
               <th
                 key={i}
-                className="text-left text-xs uppercase tracking-widest text-stone-400 font-medium px-4 sm:px-5 py-3 whitespace-nowrap"
+                className="text-left text-sm font-semibold text-stone-500 px-4 sm:px-5 py-3.5 whitespace-nowrap"
               >
                 {col.header}
               </th>
@@ -44,11 +44,11 @@ function Table<T>({
         </thead>
         <tbody className="divide-y divide-stone-200">
           {data.map((row) => (
-            <tr key={keyExtractor(row)} className="hover:bg-stone-50/60">
+            <tr key={keyExtractor(row)} className="hover:bg-cream-100/60">
               {columns.map((col, i) => (
                 <td
                   key={i}
-                  className={`px-4 sm:px-5 py-4 align-middle ${col.className ?? ""}`}
+                  className={`px-4 sm:px-5 py-5 align-middle ${col.className ?? ""}`}
                 >
                   {col.render(row)}
                 </td>

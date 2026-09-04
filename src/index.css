@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@theme {
+  /* Warm cream surfaces — senior-friendly, low-glare alternative to stone */
+  --color-cream-50: #fdfbf6;
+  --color-cream-100: #faf5ec;
+  --color-cream-200: #f2ead9;
+  --color-cream-300: #e5d8bf;
+
+  /* Friendly humanist stack; falls back to system fonts */
+  --font-sans: "Segoe UI", "Helvetica Neue", ui-sans-serif, system-ui,
+    -apple-system, Roboto, Arial, sans-serif;
+}
+
+body {
+  background-color: var(--color-cream-100);
+}

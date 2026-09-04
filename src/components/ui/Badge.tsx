@@ -17,7 +17,7 @@ const toneStyles: Record<BadgeTone, string> = {
 const Badge = ({ children, tone = "neutral" }: BadgeProps) => {
   return (
     <span
-      className={`text-xs font-medium px-2.5 py-1 border whitespace-nowrap ${toneStyles[tone]}`}
+      className={`text-sm font-medium px-3 py-1 rounded-full border whitespace-nowrap ${toneStyles[tone]}`}
     >
       {children}
     </span>

@@ -44,7 +44,7 @@ const Modal = ({
       <div
         role="dialog"
         aria-modal="true"
-        className={`relative w-full bg-white border border-stone-200 p-5 sm:p-8 max-h-[92vh] overflow-y-auto ${sizeStyles[size]}`}
+        className={`relative w-full bg-white border border-stone-200 rounded-2xl shadow-lg p-5 sm:p-8 max-h-[92vh] overflow-y-auto ${sizeStyles[size]}`}
       >
         {title && (
           <div className="flex items-start justify-between gap-4 mb-5 sm:mb-6">
@@ -52,7 +52,7 @@ const Modal = ({
             <button
               onClick={onClose}
               aria-label="Close"
-              className="text-stone-400 hover:text-stone-900 text-2xl leading-none p-1 -m-1 shrink-0"
+              className="text-stone-500 hover:text-stone-900 text-2xl leading-none p-1 -m-1 shrink-0"
             >
               ×
             </button>
